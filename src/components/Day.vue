@@ -38,7 +38,10 @@
         timeSpend: 0,
         inputValue: '',
         rightAnswers: 0,
+        totalRightAnswers:0,
         wrongAnswers: 0,
+        totalWrongAnswers:0,
+        answer:0,
       };
     },
     computed: {
@@ -48,22 +51,28 @@
       totalAnswers(){
         return this.task[this.day].length;
       },
-      totalRightAnswers() {
-        if (+this.inputValue === eval(this.task[this.day][this.questionNumber])
-            && this.questionNumber < this.task[this.day].length) {
-          this.rightAnswers += 1;
-        }
-        return this.rightAnswers;
-      },
-      totalWrongAnswers() {
-        if (+this.inputValue !== eval(this.task[this.day][this.questionNumber])
-            && this.inputValue !== ''
-            && this.questionNumber < this.task[this.day].length) {
-          console.log('количество вопросов ' + this.task[this.day].length);
-          this.wrongAnswers += 1;
-        }
-        return this.wrongAnswers;
-      },
+//      totalRightAnswers() {
+//        if (+this.inputValue === eval(this.task[this.day][this.questionNumber])
+//            && this.questionNumber < this.task[this.day].length) {
+//          this.rightAnswers += 1;
+//        }
+//        return this.rightAnswers;
+//      },
+//      totalWrongAnswers() {
+//        if (+this.inputValue !== eval(this.task[this.day][this.questionNumber])
+//            && this.inputValue !== ''
+//            && this.questionNumber < this.task[this.day].length) {
+//          console.log('количество вопросов ' + this.task[this.day].length);
+//          this.wrongAnswers += 1;
+//        }
+//        return this.wrongAnswers;
+//      },
+    },
+    watch: {
+      // эта функция запускается при любом изменении вопроса
+      inputValue: function () {
+        this.answer = this.inputValue;
+      }
     },
     methods: {
       changeQuestion() {
@@ -74,6 +83,9 @@
 //        } else if (this.questionNumber > 7) {
 //          this.day += 1;
         }
+        if(this.answer == eval(this.task[this.day][this.questionNumber-1])){
+          this.totalRightAnswers +=1;
+        } else this.totalWrongAnswers +=1;
       },
     },
   };
